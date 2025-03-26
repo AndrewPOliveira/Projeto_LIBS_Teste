@@ -18,7 +18,6 @@
 #define ARRAY_SIZE 50
 
 
-
 int main()
 {
     // Get seed
@@ -29,16 +28,11 @@ int main()
 
     // Fill the array with random sequence
     for (int i = 0; i < ARRAY_SIZE; i++) {
-        bool_sequence[i] = rand() % 2;  // Generate random 0 or 1
+        
     }
 
     for (int i = 0; i < ARRAY_SIZE; i++) {
-        // True maps buzzer A with button A 
-        if(bool_sequence[i]){
-            button_sequence[i] = BUTTON_A_PIN;
-        } else { // False maps buzzer B with button B 
-            button_sequence[i] = BUTTON_B_PIN;
-        }
+        
     }
 
     stdio_init_all();
@@ -57,92 +51,121 @@ int main()
     gpio_set_irq_enabled_with_callback(BUTTON_B_PIN, GPIO_IRQ_EDGE_FALL, true, &button_callback);
     gpio_set_irq_enabled_with_callback(BUTTON_A_PIN, GPIO_IRQ_EDGE_FALL, true, &button_callback);
 
-    int game_level = 1;
+    int game_level = 1, flag_game =0;
     int count = 0;
     bool button_a_pressed = false;
     bool button_b_pressed = false;
 
-    print_text_display((char *[]){"O jogo vai comecar", "Preste atencao"}, 2);
-    sleep_ms(2000); 
-    display_clear();
-
     while (true)
     {   
 
-        count = 0; // Zero counter every game  
-        char string [10];
-        sprintf(string, "Nivel %d", game_level);
-        print_text_display((char *[]){"Ouca bem", string}, 2);
-        for(int i=0; i<game_level; i++){
-            if(bool_sequence[i]){
-                playTone(BUZZER_PIN, 294, 500);
-                sleep_ms(1000);
-            } else {
-                playTone(BUZZER_PIN2, 330, 500);
-                sleep_ms(1000);
-            }
-        }
-
-        for(int j=0; j<game_level; j++){
-            
-            button_a_pressed = false;
-            button_b_pressed = false;
-            display_clear();
-            print_text_display((char *[]){"Pressione", "o botao certo"}, 2);
-            // Wait untill one of the buttons to be pressed
-            while (!button_a_pressed || !button_b_pressed) {
-                button_a_pressed = button_pressed(BUTTON_A_PIN);
-                button_b_pressed = button_pressed(BUTTON_B_PIN);
-                if(button_a_pressed || button_b_pressed){
-                    break;
-                }
-                sleep_ms(10);  
-            }
-
-
-            if(button_a_pressed){
-                if(button_sequence[j] == BUTTON_A_PIN){
-                    // Correct 
-                    display_clear();
-                    count += 1;
-                    char str[7];
-                    sprintf(str, "%d de %d", count, game_level);
-                    display_clear();
-                    print_text_display((char *[]){"Botao certo", str}, 2);
-                } else {
-                    // Wrong 
-                    display_clear();
-                    print_text_display((char *[]){"Botao errado", " ", "Voce perdeu"}, 3);
-                    sleep_ms(3000);
-                    break;
-                }
-            } else if (button_b_pressed) {
-                if(button_sequence[j] == BUTTON_B_PIN){
-                    // Correct 
-                    display_clear();
-                    count += 1;
-                    char str[7];
-                    sprintf(str, "%d de %d", count, game_level);
-                    print_text_display((char *[]){"Botao certo", str}, 2);
-                } else {
-                    // Wrong 
-                    display_clear();
-                    print_text_display((char *[]){"Botao errado", " ", "Voce perdeu"}, 3);
-                    sleep_ms(3000);
-                    break;
-                }
-            }
-
-            // Wait 1s untill next button ask to be presssed 
-            sleep_ms(1000);
-
-        }
-
-        // Aumenta o nivel se acertar todas
-        if(count == game_level){
-            game_level += 1; 
-        }
         display_clear();
-        sleep_ms(50);
+        print_text_display((char *[]){"Pressione", " A   ou   B  ", "para comecar"}, 3);
+        while (!button_a_pressed || !button_b_pressed) {
+            button_a_pressed = button_pressed(BUTTON_A_PIN);
+            button_b_pressed = button_pressed(BUTTON_B_PIN);
+            if(button_a_pressed || button_b_pressed){
+                break;
+            }
+            sleep_ms(10);  
+        }
+
+        game_level = 1;
+        flag_game = !flag_game;
+
+        display_clear();
+        print_text_display((char *[]){"O jogo"," vai comecar", "Preste atencao"}, 3);
+        sleep_ms(2000); 
+        display_clear();
+
+        while(flag_game){
+    
+            count = 0; // Zero counter every game  
+            char string [10];
+            sprintf(string, "Nivel %d", game_level);
+            print_text_display((char *[]){"Ouca bem", " ", string}, 3);
+            for(int i=0; i<game_level; i++){
+
+                bool_sequence[i] = rand() % 2;  // Generate random 0 or 1
+                // True maps buzzer A with button A 
+                if(bool_sequence[i]){
+                    button_sequence[i] = BUTTON_A_PIN;
+                    playTone(BUZZER_PIN, 294, 500);
+                    sleep_ms(1000);
+                } else { // False maps buzzer B with button B 
+                    button_sequence[i] = BUTTON_B_PIN;
+                    playTone(BUZZER_PIN2, 330, 500);
+                    sleep_ms(1000);
+                }
+            }
+    
+            for(int j=0; j<game_level; j++){
+                
+                button_a_pressed = false;
+                button_b_pressed = false;
+                display_clear();
+                print_text_display((char *[]){"Pressione"," ", "o botao certo"}, 3);
+                // Wait untill one of the buttons to be pressed
+                while (!button_a_pressed || !button_b_pressed) {
+                    button_a_pressed = button_pressed(BUTTON_A_PIN);
+                    button_b_pressed = button_pressed(BUTTON_B_PIN);
+                    if(button_a_pressed || button_b_pressed){
+                        break;
+                    }
+                    sleep_ms(10);  
+                }
+    
+    
+                if(button_a_pressed){
+                    if(button_sequence[j] == BUTTON_A_PIN){
+                        // Correct 
+                        display_clear();
+                        count += 1;
+                        char str[7];
+                        sprintf(str, "%d de %d", count, game_level);
+                        display_clear();
+                        print_text_display((char *[]){"Botao certo", str}, 2);
+                    } else {
+                        // Wrong 
+                        display_clear();
+                        print_text_display((char *[]){"Botao errado", " ", "Voce perdeu"}, 3);
+                        marcha_imperial();
+                        sleep_ms(3000);
+                        flag_game = !flag_game;
+                        break;
+                    }
+                } else if (button_b_pressed) {
+                    if(button_sequence[j] == BUTTON_B_PIN){
+                        // Correct 
+                        display_clear();
+                        count += 1;
+                        char str[7];
+                        sprintf(str, "%d de %d", count, game_level);
+                        print_text_display((char *[]){"Botao certo", str}, 2);
+                    } else {
+                        // Wrong 
+                        display_clear();
+                        print_text_display((char *[]){"Botao errado", " ", "Voce perdeu"}, 3);
+                        marcha_imperial();
+                        sleep_ms(3000);
+                        flag_game = !flag_game;
+                        break;
+                    }
+                }
+    
+                // Wait 1s untill next button ask to be presssed 
+                sleep_ms(1000);
+    
+            }
+    
+            // Aumenta o nivel se acertar todas
+            if(count == game_level){
+                game_level += 1; 
+            }
+            display_clear();
+            sleep_ms(50);
+
+        }
+        
     }
 }

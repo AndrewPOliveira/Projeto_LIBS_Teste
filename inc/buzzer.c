@@ -235,7 +235,7 @@ void marcha_imperial()
     };
 
     // Toca a sequência de notas
-    for (int rep = 0; rep < 5; rep++)
+    for (int rep = 0; rep < 1; rep++)
     {
         for (int i = 0; i < sizeof(notas) / sizeof(notas[0]); i++)
         {
