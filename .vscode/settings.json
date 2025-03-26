@@ -42,6 +42,7 @@
         "binary_info.h": "c",
         "pio.h": "c",
         "timer.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "buzzer.h": "c"
     }
 }
