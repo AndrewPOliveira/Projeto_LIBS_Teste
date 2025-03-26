@@ -19,7 +19,9 @@ int main()
     stdio_init_all();
 
     display_init();
-    //display_clear();
+    display_clear();
+
+    print_text_display((char *[]){"text"}, 1);
 
     while (true) {
         
