@@ -10,7 +10,7 @@
 #define BUTTON_PIN 5          // Pino do botão 1
 #define BUTTON_PIN2 6         // Pino do botão 2
 #define BUZZER_PIN 21         // Pino do buzzer 1
-#define BUZZER_PIN2 8         // Pino do buzzer 2
+#define BUZZER_PIN2 10         // Pino do buzzer 2 --> Pode ser que haja mudança de pinos entre as diferentes versões
 
 // Variável global para controlar se o buzzer deve parar
 extern int stop_buzzer;       // Declaração da variável global para controle de interrupção
