@@ -2,15 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+
 #include "hardware/pio.h"
 #include "hardware/timer.h"
 #include "hardware/clocks.h"
-#include "pico/stdlib.h"
-#include "pico/binary_info.h"
-#include "inc/ssd1306.h"
 #include "hardware/i2c.h"
+
+#include "pico/stdlib.h"
+
+#include "inc/ssd1306.h"
 #include "inc/display.h"
-#include "tests/display_test.h"
 
 
 int main()
@@ -18,7 +19,7 @@ int main()
     stdio_init_all();
 
     display_init();
-    display_clear();
+    //display_clear();
 
     while (true) {
         
